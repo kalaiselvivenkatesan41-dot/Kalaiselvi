@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Interactive Examples</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f9c74f;
+            --danger: #f94144;
+            --gray: #6c757d;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .card-header i {
+            font-size: 1.5rem;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-footer {
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            border-top: 1px solid #eaeaea;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-accent {
+            background: var(--accent);
+        }
+
+        .btn-accent:hover {
+            background: #c1121f;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .result {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-top: 1rem;
+            min-height: 50px;
+        }
+
+        .counter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .counter-value {
+            font-size: 2rem;
+            font-weight: bold;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .counter-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .todo-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: var(--radius);
+            margin-bottom: 0.5rem;
+        }
+
+        .todo-item span {
+            flex-grow: 1;
+            margin-left: 1rem;
+        }
+
+        .todo-item.completed span {
+            text-decoration: line-through;
+            color: var(--gray);
+        }
+
+        .delete-btn {
+            color: var(--danger);
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>JavaScript Interactive Examples</h1>
+            <p class="subtitle">Explore fundamental JavaScript concepts through these interactive examples</p>
+        </header>
+
+        <div class="card-grid">
+            <!-- Counter Example -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-plus-minus"></i>
+                    <h2>Counter</h2>
+                </div>
+                <div class="card-content">
+                    <p>A simple counter demonstrating DOM manipulation and event handling.</p>
+                    <div class="counter">
+                        <div class="counter-btn" style="background: var(--danger); color: white;" id="decrement">-</div>
+                        <div class="counter-value" id="counterValue">0</div>
+                        <div class="counter-btn" style="background: var(--success); color: white;" id="increment">+</div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn" id="resetCounter">Reset</button>
+                </div>
+            </div>
+
+            <!-- To-Do List Example -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-tasks"></i>
+                    <h2>To-Do List</h2>
+                </div>
+                <div class="card-content">
+                    <p>Add and manage tasks with this interactive to-do list.</p>
+                    <input type="text" id="todoInput" placeholder="Enter a new task...">
+                    <button class="btn" id="addTodo">Add Task</button>
+                    <ul class="todo-list" id="todoList"></ul>
+                </div>
+            </div>
+
+            <!-- Calculator Example -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-calculator"></i>
+                    <h2>Calculator</h2>
+                </div>
+                <div class="card-content">
+                    <p>A simple calculator demonstrating JavaScript functions and operations.</p>
+                    <input type="number" id="num1" placeholder="First number">
+                    <input type="number" id="num2" placeholder="Second number">
+                    <select id="operation">
+                        <option value="add">Addition (+)</option>
+                        <option value="subtract">Subtraction (-)</option>
+                        <option value="multiply">Multiplication (×)</option>
+                        <option value="divide">Division (÷)</option>
+                    </select>
+                    <button class="btn" id="calculate">Calculate</button>
+                    <div class="result" id="calcResult">Result will appear here</div>
+                </div>
+            </div>
+
+            <!-- Color Changer Example -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-palette"></i>
+                    <h2>Background Color Changer</h2>
+                </div>
+                <div class="card-content">
+                    <p>Change the background color using buttons and RGB sliders.</p>
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                        <button class="btn" style="background: #ff6b6b;" id="colorRed">Red</button>
+                        <button class="btn" style="background: #4ecdc4;" id="colorBlue">Blue</button>
+                        <button class="btn" style="background: #ffd166;" id="colorYellow">Yellow</button>
+                    </div>
+                    <div>
+                        <label for="redSlider">Red: <span id="redValue">100</span></label>
+                        <input type="range" id="redSlider" min="0" max="255" value="100">
+                    </div>
+                    <div>
+                        <label for="greenSlider">Green: <span id="greenValue">100</span></label>
+                        <input type="range" id="greenSlider" min="0" max="255" value="100">
+                    </div>
+                    <div>
+                        <label for="blueSlider">Blue: <span id="blueValue">100</span></label>
+                        <input type="range" id="blueSlider" min="0" max="255" value="100">
+                    </div>
+                    <div class="result" id="colorDisplay" style="background: rgb(100, 100, 100); color: white;">
+                        RGB(100, 100, 100)
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Fetcher Example -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-database"></i>
+                    <h2>API Data Fetcher</h2>
+                </div>
+                <div class="card-content">
+                    <p>Fetch data from a public API using JavaScript's Fetch API.</p>
+                    <button class="btn" id="fetchUser">Get Random User</button>
+                    <div class="result" id="userData">User data will appear here</div>
+                </div>
+            </div>
+
+            <!-- Digital Clock Example -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-clock"></i>
+                    <h2>Digital Clock</h2>
+                </div>
+                <div class="card-content">
+                    <p>A real-time digital clock showing JavaScript Date object and timers.</p>
+                    <div class="result" style="text-align: center; font-size: 2rem; font-weight: bold;" id="clock">
+                        00:00:00
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Created with JavaScript | &copy; 2023</p>
+        </footer>
+    </div>
+
+    <script>
+        // Counter functionality
+        let count = 0;
+        const counterValue = document.getElementById('counterValue');
+        const incrementBtn = document.getElementById('increment');
+        const decrementBtn = document.getElementById('decrement');
+        const resetBtn = document.getElementById('resetCounter');
+
+        incrementBtn.addEventListener('click', () => {
+            count++;
+            counterValue.textContent = count;
+        });
+
+        decrementBtn.addEventListener('click', () => {
+            count--;
+            counterValue.textContent = count;
+        });
+
+        resetBtn.addEventListener('click', () => {
+            count = 0;
+            counterValue.textContent = count;
+        });
+
+        // To-Do List functionality
+        const todoInput = document.getElementById('todoInput');
+        const addTodoBtn = document.getElementById('addTodo');
+        const todoList = document.getElementById('todoList');
+
+        addTodoBtn.addEventListener('click', () => {
+            const taskText = todoInput.value.trim();
+            if (taskText) {
+                const li = document.createElement('li');
+                li.className = 'todo-item';
+                li.innerHTML = `
+                    <input type="checkbox">
+                    <span>${taskText}</span>
+                    <i class="fas fa-trash delete-btn"></i>
+                `;
+                
+                const checkbox = li.querySelector('input');
+                const deleteBtn = li.querySelector('.delete-btn');
+                
+                checkbox.addEventListener('change', function() {
+                    li.classList.toggle('completed', this.checked);
+                });
+                
+                deleteBtn.addEventListener('click', function() {
+                    li.remove();
+                });
+                
+                todoList.appendChild(li);
+                todoInput.value = '';
+            }
+        });
+
+        // Calculator functionality
+        const num1Input = document.getElementById('num1');
+        const num2Input = document.getElementById('num2');
+        const operationSelect = document.getElementById('operation');
+        const calculateBtn = document.getElementById('calculate');
+        const calcResult = document.getElementById('calcResult');
+
+        calculateBtn.addEventListener('click', () => {
+            const num1 = parseFloat(num1Input.value);
+            const num2 = parseFloat(num2Input.value);
+            const operation = operationSelect.value;
+            
+            if (isNaN(num1) || isNaN(num2)) {
+                calcResult.textContent = 'Please enter valid numbers';
+                return;
+            }
+            
+            let result;
+            switch(operation) {
+                case 'add':
+                    result = num1 + num2;
+                    break;
+                case 'subtract':
+                    result = num1 - num2;
+                    break;
+                case 'multiply':
+                    result = num1 * num2;
+                    break;
+                case 'divide':
+                    result = num2 !== 0 ? num1 / num2 : 'Cannot divide by zero';
+                    break;
+            }
+            
+            calcResult.textContent = `Result: ${result}`;
+        });
+
+        // Color Changer functionality
+        const colorRed = document.getElementById('colorRed');
+        const colorBlue = document.getElementById('colorBlue');
+        const colorYellow = document.getElementById('colorYellow');
+        const redSlider = document.getElementById('redSlider');
+        const greenSlider = document.getElementById('greenSlider');
+        const blueSlider = document.getElementById('blueSlider');
+        const redValue = document.getElementById('redValue');
+        const greenValue = document.getElementById('greenValue');
+        const blueValue = document.getElementById('blueValue');
+        const colorDisplay = document.getElementById('colorDisplay');
+
+        colorRed.addEventListener('click', () => {
+            document.body.style.backgroundColor = '#ff6b6b';
+        });
+
+        colorBlue.addEventListener('click', () => {
+            document.body.style.backgroundColor = '#4ecdc4';
+        });
+
+        colorYellow.addEventListener('click', () => {
+            document.body.style.backgroundColor = '#ffd166';
+        });
+
+        function updateColor() {
+            const r = redSlider.value;
+            const g = greenSlider.value;
+            const b = blueSlider.value;
+            
+            redValue.textContent = r;
+            greenValue.textContent = g;
+            blueValue.textContent = b;
+            
+            colorDisplay.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+            colorDisplay.textContent = `RGB(${r}, ${g}, ${b})`;
+            colorDisplay.style.color = (r > 150 || g > 150 || b > 150) ? 'black' : 'white';
+        }
+
+        redSlider.addEventListener('input', updateColor);
+        greenSlider.addEventListener('input', updateColor);
+        blueSlider.addEventListener('input', updateColor);
+
+        // API Fetcher functionality
+        const fetchUserBtn = document.getElementById('fetchUser');
+        const userData = document.getElementById('userData');
+
+        fetchUserBtn.addEventListener('click', () => {
+            userData.textContent = 'Loading...';
+            
+            fetch('https://jsonplaceholder.typicode.com/users/' + Math.floor(Math.random() * 10 + 1))
+                .then(response => response.json())
+                .then(data => {
+                    userData.innerHTML = `
+                        <strong>Name:</strong> ${data.name}<br>
+                        <strong>Email:</strong> ${data.email}<br>
+                        <strong>Phone:</strong> ${data.phone}<br>
+                        <strong>Website:</strong> ${data.website}
+                    `;
+                })
+                .catch(error => {
+                    userData.textContent = 'Error fetching data';
+                    console.error('Error:', error);
+                });
+        });
+
+        // Digital Clock functionality
+        const clock = document.getElementById('clock');
+
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            clock.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>
